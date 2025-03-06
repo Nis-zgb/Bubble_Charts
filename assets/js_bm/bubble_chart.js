@@ -163,8 +163,62 @@ var agecatCenters = { // Center locations of the bubbles.
     '4h bis 5h': 730,
     'mehr als 5h': 900
   };
-    
+  
+  // Fünfter Button: Sorgenbarometer   
+ 
+var sorgenCenters = { // Center locations of the bubbles.
+    1: { x: 200, y: height / 2 },
+    2: { x: 400, y: height / 2 },
+    3: { x: 600, y: height / 2 },
+    4: { x: 800, y: height / 2 }
+   
+  };
 
+  var sorgenTitleX = { // X locations of the year titles.
+    
+    'Mache mir Sorgen um meine Daten': 200,
+    'Mache mir eher Sorgen': 400,
+    'Mache mir eher keine Sorgen': 700,
+    'Mache mir keine Sorgen um meine Daten': 800
+
+  };
+  // Sechster Button: Griffweite    
+ 
+var griffweiteCenters = { // Center locations of the bubbles.
+    1: { x: 100, y: height / 2 },
+    2: { x: 280, y: height / 2 },
+    3: { x: 400, y: height / 1.9 },
+    4: { x: 520, y: height / 2 }
+
+  };
+
+  var griffweiteTitleX = { // X locations of the year titles.
+    
+    'Ja': 200,
+    'eher Ja': 400,
+    'eher Nein': 600,
+    'Nein': 800
+    
+  };
+    
+// Siebter Button: Verzicht   
+ 
+var verzichtCenters = { // Center locations of the bubbles.
+    1: { x: 200, y: height / 2 },
+    2: { x: 400, y: height / 2 },
+    3: { x: 600, y: height / 2 },
+    4: { x: 800, y: height / 2 }
+   
+  };
+
+  var verzichtTitleX = { // X locations of the year titles.
+    
+    'Stimmt': 200,
+    'Stimmt eher': 400,
+    'Stimmt eher nicht': 700,
+    'Stimmt nicht': 800
+
+  };
        
     
 //* ------------------------------------------------------------------
@@ -232,7 +286,11 @@ var agecatCenters = { // Center locations of the bubbles.
           
         sex: d.geschlecht,
           
-       
+       sorgen:d.sorgenbarometer,
+        
+        griffweite: d.griffweite,
+        
+        verzicht: d.verzichtkat, 
         
         x: Math.random() * 900,
         y: Math.random() * 800
@@ -329,6 +387,9 @@ var agecatCenters = { // Center locations of the bubbles.
     hideAgecat();
     hideSex();
     hideScreentime();
+    hideSorgen();
+    hideGriffweite();
+    hideVerzicht();
 
     
     force.on('tick', function (e) {
@@ -371,6 +432,9 @@ Die Positionierung basiert auf dem alpha Parameter des force layouts und wird kl
     hideAgecat();
     hideSex();
     hideScreentime();
+   hideSorgen();
+   hideGriffweite();
+   hideVerzicht();
 
 
     force.on('tick', function (e) {
@@ -419,6 +483,9 @@ function moveToYear(alpha) {
     hideYear();
     hideSex();
     hideScreentime();
+   hideSorgen();
+   hideGriffweite();
+   hideVerzicht();
 
 
     force.on('tick', function (e) {
@@ -467,6 +534,9 @@ function moveToAgecat(alpha) {
     hideYear();
     hideAgecat();
     hideScreentime();
+    hideSorgen();
+    hideGriffweite();
+    hideVerzicht();
 
 
     force.on('tick', function (e) {
@@ -515,6 +585,9 @@ function moveToAgecat(alpha) {
     hideYear();
     hideSex();
     hideAgecat();
+    hideSorgen();
+    hideGriffweite();
+    hideVerzicht();
 
 
     force.on('tick', function (e) {
@@ -551,10 +624,160 @@ function moveToAgecat(alpha) {
       .attr('text-anchor', 'middle')
       .text(function (d) { return d; });
     }    
+//* ------------------------------------------------------------------
+//
+// SORGEN
+//
+// -----------------------------------------------------------------*/
+    
+  function splitBubblesintoSorgen() {
+    showSorgen();
+    hideYear();
+    hideSex();
+    hideAgecat();
+    hideScreentime();
+    hideGriffweite();
+    hideVerzicht();
 
+
+    force.on('tick', function (e) {
+      bubbles.each(moveToSorgen(e.alpha))
+        .attr('cx', function (d) { return d.x; })
+        .attr('cy', function (d) { return d.y; });
+    });
+
+    force.start();
+  }
+
+  function moveToSorgen(alpha) {
+    return function (d) {
+      var target = sorgenCenters[d.sorgen];
+      d.x = d.x + (target.x - d.x) * damper * alpha * 1.1;
+      d.y = d.y + (target.y - d.y) * damper * alpha * 1.1;
+    };
+  }
+
+  function hideSorgen() {
+    svg.selectAll('.sorgen').remove();
+  }
+
+  function showSorgen() {
+
+    var sorgenData = d3.keys(sorgenTitleX);
+    var sorgen = svg.selectAll('.sorgen')
+      .data(sorgenData);
+
+    sorgen.enter().append('text')
+      .attr('class', 'sorgen')
+      .attr('x', function (d) { return sorgenTitleX[d]; })
+      .attr('y', 65)
+      .attr('text-anchor', 'middle')
+      .text(function (d) { return d; });
+    }    
+//* ------------------------------------------------------------------
+//
+// Griffweite
+//
+// -----------------------------------------------------------------*/
+    
+  function splitBubblesintoGriffweite() {
+    showGriffweite();
+    hideYear();
+    hideSex();
+    hideAgecat();
+    hideScreentime();
+    hideSorgen();
+    hideVerzicht();
+
+
+    force.on('tick', function (e) {
+      bubbles.each(moveToGriffweite(e.alpha))
+        .attr('cx', function (d) { return d.x; })
+        .attr('cy', function (d) { return d.y; });
+    });
+
+    force.start();
+  }
+
+  function moveToGriffweite(alpha) {
+    return function (d) {
+      var target = griffweiteCenters[d.griffweite];
+      d.x = d.x + (target.x - d.x) * damper * alpha * 1.1;
+      d.y = d.y + (target.y - d.y) * damper * alpha * 1.1;
+    };
+  }
+
+  function hideGriffweite() {
+    svg.selectAll('.griffweite').remove();
+  }
+
+  function showGriffweite() {
+
+    var griffweiteData = d3.keys(griffweiteTitleX);
+    var griffweite = svg.selectAll('.griffweite')
+      .data(griffweiteData);
+
+    griffweite.enter().append('text')
+      .attr('class', 'griffweite')
+      .attr('x', function (d) { return griffweiteTitleX[d]; })
+      .attr('y', 65)
+      .attr('text-anchor', 'middle')
+      .text(function (d) { return d; });
+    }
+
+//* ------------------------------------------------------------------
+//
+// Verzicht
+//
+// -----------------------------------------------------------------*/
+    
+  function splitBubblesintoVerzicht() {
+    showVerzicht();
+    hideYear();
+    hideSex();
+    hideAgecat();
+    hideScreentime();
+    hideGriffweite();
+    hideSorgen();
+
+
+    force.on('tick', function (e) {
+      bubbles.each(moveToVerzicht(e.alpha))
+        .attr('cx', function (d) { return d.x; })
+        .attr('cy', function (d) { return d.y; });
+    });
+
+    force.start();
+  }
+
+  function moveToVerzicht(alpha) {
+    return function (d) {
+      var target = verzichtCenters[d.verzicht];
+      d.x = d.x + (target.x - d.x) * damper * alpha * 1.1;
+      d.y = d.y + (target.y - d.y) * damper * alpha * 1.1;
+    };
+  }
+
+  function hideVerzicht() {
+    svg.selectAll('.verzicht').remove();
+  }
+
+  function showVerzicht() {
+
+    var verzichtData = d3.keys(verzichtTitleX);
+    var verzicht = svg.selectAll('.verzicht')
+      .data(verzichtData);
+
+    verzicht.enter().append('text')
+      .attr('class', 'verzicht')
+      .attr('x', function (d) { return verzichtTitleX[d]; })
+      .attr('y', 65)
+      .attr('text-anchor', 'middle')
+      .text(function (d) { return d; });
+    }  
   
     
-    
+  
 //* ------------------------------------------------------------------
 //
 // WISSENSCHAFTSWOCHE F
@@ -580,6 +803,12 @@ function moveToAgecat(alpha) {
       splitBubblesintoSex();
     } else if (displayName === 'screentime') {
       splitBubblesintoScreentime();
+      } else if (displayName === 'sorgen') {
+      splitBubblesintoSorgen();
+        } else if (displayName === 'griffweite') {
+      splitBubblesintoVerzicht();
+          } else if (displayName === 'verzicht') {
+      splitBubblesintoVerzicht();
     } else {
       groupBubbles();
     }
@@ -615,19 +844,35 @@ function moveToAgecat(alpha) {
   /* Tooltip-Funktion*/
   function showDetail(d) {
 
-    d3.select(this).attr('stroke', 'black');
 
+    d3.select(this).attr('stroke', 'black');
     var content = '<span class="name">Alter: </span><span class="value">' +
                   d.age +
                   '</span><br/>' +
+        
                   '<span class="name">Geschlecht: </span><span class="value">' +
                   d.sex +
                   '</span><br/>' +
+        
                   '<span class="name">Bildschirmzeit: </span><span class="value">' +
                   d.screentime +
                   '</span><br/>' +
-                  '<span class="name">"Umfragejahr": </span><span class="value">' +
+        
+                  '<span class="name">"Ich mache mir Sorgen um meine Daten": </span><span class="value">' +
+                  d.sorgen +
+                  '</span><br/>' +
+        
+                  '<span class="name">Umfragejahr: </span><span class="value">' +
                   d.year +
+     
+                    '</span><br/>' +
+        
+                  '<span class="name">Verzicht: </span><span class="value">' +
+                  d.verzichtkat +
+                '</span><br/>' +
+        
+                  '<span class="name">Griffweite: </span><span class="value">' +
+                  d.griffweite +
                   '</span>';
     tooltip2.showtooltip2(content, d3.event);
   }
