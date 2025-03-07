@@ -167,19 +167,19 @@ var agecatCenters = { // Center locations of the bubbles.
   // Fünfter Button: Sorgenbarometer   
  
 var sorgenCenters = { // Center locations of the bubbles.
-    1: { x: 200, y: height / 2 },
-    2: { x: 400, y: height / 2 },
-    3: { x: 600, y: height / 2 },
-    4: { x: 800, y: height / 2 }
+    1: { x: 50, y: height / 1.7},
+    2: { x: 262, y: height / 1.7 },
+    3: { x: 350, y: height / 1.7 },
+    4: { x: 470, y: height / 1.7}
    
   };
 
   var sorgenTitleX = { // X locations of the year titles.
     
-    'Mache mir Sorgen um meine Daten': 200,
+    'Mache mir Sorgen um meine Daten': 110,
     'Mache mir eher Sorgen': 400,
-    'Mache mir eher keine Sorgen': 700,
-    'Mache mir keine Sorgen um meine Daten': 800
+    'Mache mir eher keine Sorgen': 640,
+    'Mache mir keine Sorgen um meine Daten': 950
 
   };
   // Sechster Button: Griffweite    
@@ -839,7 +839,8 @@ function moveToAgecat(alpha) {
 
   var fillColor = d3.scale.ordinal()
     .domain(['1','2','3', '4','5','6'])
-    .range(['#33FF8A', '#33FFAF', '#33FFB8', '#33FFD1','#33FFE9','#33F6FF']);
+    .range(['#-DAF7A6', '#FFC300', '#FF5733', '#C70039','#900C3F','#581845']);
+
 
   /* Tooltip-Funktion*/
   function showDetail(d) {
